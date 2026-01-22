@@ -2,6 +2,7 @@ using Groupchat_Api.Core.Interfaces;
 using Groupchat_Api.Data.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Groupchat_Api.Controllers
 {
@@ -35,6 +36,32 @@ namespace Groupchat_Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something went wrong while registering user.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto dto)
+        {
+            try
+            {
+                var result = await _userService.LoginAsync(dto);
+
+                _logger.LogInformation("Login successfull.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while logging in user.");
                 return StatusCode(500, "Something went wrong.");
             }
         }

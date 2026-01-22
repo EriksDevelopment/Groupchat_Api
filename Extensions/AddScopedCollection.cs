@@ -11,6 +11,7 @@ namespace Groupchat_Api.Extensions
         public static IServiceCollection AddScopedServices(this IServiceCollection services)
         {
             services.AddScoped<JwtService>();
+            
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IUserService, UserService>();
 

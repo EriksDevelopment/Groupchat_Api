@@ -13,11 +13,14 @@ namespace Groupchat_Api.Core.Security
             _config = config;
         }
 
-        public string GenerateToken(int id, string role)
+        public (string Token, DateTime ExpiresAt) GenerateToken(int id, string role)
         {
             var key = _config["Jwt:Key"];
             if (string.IsNullOrEmpty(key))
                 throw new InvalidOperationException("JWT key missing.");
+
+            var tokenValidityMins = _config.GetValue<int>("Jwt:TokenValidityMins");
+            var expiresAt = DateTime.UtcNow.AddMinutes(tokenValidityMins);
 
             var claims = new[]
             {
@@ -28,10 +31,7 @@ namespace Groupchat_Api.Core.Security
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes
-                (
-                    _config.GetValue<int>("Jwt:TokenValidityMins")
-                ),
+                Expires = expiresAt,
                 Issuer = _config["Jwt:Issuer"],
                 Audience = _config["Jwt:Audience"],
                 SigningCredentials = new SigningCredentials
@@ -43,7 +43,9 @@ namespace Groupchat_Api.Core.Security
 
             var handler = new JwtSecurityTokenHandler();
 
-            return handler.WriteToken(handler.CreateToken(tokenDescriptor));
+            var token = handler.WriteToken(handler.CreateToken(tokenDescriptor));
+
+            return (token, expiresAt);
         }
     }
 }

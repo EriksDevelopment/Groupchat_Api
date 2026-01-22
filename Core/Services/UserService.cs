@@ -52,11 +52,12 @@ namespace Groupchat_Api.Core.Services
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 throw new InvalidOperationException("Invalid username or password.");
 
-            var token = _jwt.GenerateToken(user.Id, "User");
+            var (token, expiresAt) = _jwt.GenerateToken(user.Id, "User");
 
             return new LoginResponseDto
             {
-                AccessKey = token
+                AccessKey = token,
+                ExpiresAt = expiresAt
             };
         }
     }
