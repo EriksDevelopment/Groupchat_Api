@@ -1,4 +1,5 @@
 using Groupchat_Api.Core.Interfaces;
+using Groupchat_Api.Core.Security;
 using Groupchat_Api.Data.Dtos.User;
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
@@ -8,9 +9,11 @@ namespace Groupchat_Api.Core.Services
     public class UserService : IUserService
     {
         private readonly IUserRepo _userRepo;
-        public UserService(IUserRepo userRepo)
+        private readonly JwtService _jwt;
+        public UserService(IUserRepo userRepo, JwtService jwt)
         {
             _userRepo = userRepo;
+            _jwt = jwt;
         }
 
         public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto dto)
@@ -36,6 +39,24 @@ namespace Groupchat_Api.Core.Services
             return new RegisterResponseDto
             {
                 Message = $"Welcome to Groupchat {user.UserName}"
+            };
+        }
+
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.UserName) ||
+                string.IsNullOrWhiteSpace(dto.Password))
+                throw new ArgumentException("Username or password can't be empty.");
+
+            var user = await _userRepo.GetUserNameAsync(dto.UserName);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                throw new InvalidOperationException("Invalid username or password.");
+
+            var token = _jwt.GenerateToken(user.Id, "User");
+
+            return new LoginResponseDto
+            {
+                AccessKey = token
             };
         }
     }
