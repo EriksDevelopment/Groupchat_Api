@@ -20,7 +20,7 @@ namespace Groupchat_Api.Data.Repos
             return user;
         }
 
-        public async Task<User?> UserNameExistsAsync(string userName) =>
-            await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        public async Task<bool> UserNameExistsAsync(string userName) =>
+            await _context.Users.AnyAsync(u => u.UserName == userName);
     }
 }
