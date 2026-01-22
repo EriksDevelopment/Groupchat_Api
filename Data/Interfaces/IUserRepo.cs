@@ -6,5 +6,6 @@ namespace Groupchat_Api.Data.Interfaces
     {
         Task<User> AddUserAsync(User user);
         Task<bool> UserNameExistsAsync(string userName);
+        Task<User?> GetUserNameAsync(string userName);
     }
 }
