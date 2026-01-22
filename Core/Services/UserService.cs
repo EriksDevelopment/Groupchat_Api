@@ -3,6 +3,7 @@ using Groupchat_Api.Core.Security;
 using Groupchat_Api.Data.Dtos.User;
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Groupchat_Api.Core.Services
 {
@@ -59,6 +60,26 @@ namespace Groupchat_Api.Core.Services
                 AccessKey = token,
                 ExpiresAt = expiresAt
             };
+        }
+
+        public async Task<DeleteResponseDto> DeleteAsync(DeleteRequestDto dto, string userName)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Password))
+                throw new ArgumentException("Password can't be empty.");
+
+            var user = await _userRepo.GetUserNameAsync(userName);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(user.PasswordHash, dto.Password))
+                throw new InvalidOperationException("Wrong password.");
+
+            await _userRepo.DeleteUserAsync(user);
+
+            return new DeleteResponseDto
+            {
+                Message = $"User {user.UserName} deleted successfully."
+            };
+
+
         }
     }
 }
