@@ -1,0 +1,26 @@
+using Groupchat_Api.Data.Interfaces;
+using Groupchat_Api.Data.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Groupchat_Api.Data.Repos
+{
+    public class UserRepo : IUserRepo
+    {
+        private readonly GroupchatDbContext _context;
+
+        public UserRepo(GroupchatDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<User> AddUserAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User?> UserNameExistsAsync(string userName) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+    }
+}

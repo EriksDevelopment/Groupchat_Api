@@ -5,6 +5,6 @@ namespace Groupchat_Api.Data.Interfaces
     public interface IUserRepo
     {
         Task<User> AddUserAsync(User user);
-        Task<User> UserNameExistsAsync(string userName);
+        Task<User?> UserNameExistsAsync(string userName);
     }
 }
