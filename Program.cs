@@ -8,6 +8,8 @@ builder.Services.AddDbContext<GroupchatDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSwaggerGenServices();
+builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Services.AddAuthorization();
 builder.Services.AddScopedServices();
 builder.Services.AddControllers();
 
@@ -24,6 +26,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
