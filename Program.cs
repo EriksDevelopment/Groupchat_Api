@@ -8,6 +8,7 @@ builder.Services.AddDbContext<GroupchatDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSwaggerGenServices();
+builder.Services.AddScopedServices();
 builder.Services.AddControllers();
 
 var app = builder.Build();
