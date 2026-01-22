@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Groupchat_Api.Core.Interfaces;
 using Groupchat_Api.Data.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
@@ -62,6 +63,34 @@ namespace Groupchat_Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something went wrong while logging in user.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete("delete")]
+        public async Task<ActionResult<DeleteResponseDto>> Delete(DeleteRequestDto dto)
+        {
+            try
+            {
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _userService.DeleteAsync(dto, user);
+
+                _logger.LogInformation("User deleted successfully.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while deleting user.");
                 return StatusCode(500, "Something went wrong.");
             }
         }

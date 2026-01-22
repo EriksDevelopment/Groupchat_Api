@@ -62,12 +62,12 @@ namespace Groupchat_Api.Core.Services
             };
         }
 
-        public async Task<DeleteResponseDto> DeleteAsync(DeleteRequestDto dto, string userName)
+        public async Task<DeleteResponseDto> DeleteAsync(DeleteRequestDto dto, int id)
         {
             if (string.IsNullOrWhiteSpace(dto.Password))
                 throw new ArgumentException("Password can't be empty.");
 
-            var user = await _userRepo.GetUserNameAsync(userName);
+            var user = await _userRepo.GetIdAsync(id);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(user.PasswordHash, dto.Password))
                 throw new InvalidOperationException("Wrong password.");

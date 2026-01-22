@@ -8,5 +8,6 @@ namespace Groupchat_Api.Data.Interfaces
         Task<bool> UserNameExistsAsync(string userName);
         Task<User?> GetUserNameAsync(string userName);
         Task<User> DeleteUserAsync(User user);
+        Task<User?> GetIdAsync(int id);
     }
 }

@@ -32,5 +32,8 @@ namespace Groupchat_Api.Data.Repos
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<User?> GetIdAsync(int id) =>
+           await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
 }
