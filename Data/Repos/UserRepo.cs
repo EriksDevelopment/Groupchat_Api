@@ -25,5 +25,12 @@ namespace Groupchat_Api.Data.Repos
 
         public async Task<User?> GetUserNameAsync(string userName) =>
             await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+        public async Task<User> DeleteUserAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }
