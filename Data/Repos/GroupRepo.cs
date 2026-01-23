@@ -1,5 +1,6 @@
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Groupchat_Api.Data.Repos
 {
@@ -24,5 +25,8 @@ namespace Groupchat_Api.Data.Repos
             await _context.SaveChangesAsync();
             return group;
         }
+
+        public async Task<List<Group>> GetGroupAsync() =>
+            await _context.Groups.ToListAsync();
     }
 }
