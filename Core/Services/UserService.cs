@@ -69,7 +69,7 @@ namespace Groupchat_Api.Core.Services
 
             var user = await _userRepo.GetIdAsync(id);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(user.PasswordHash, dto.Password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 throw new InvalidOperationException("Wrong password.");
 
             await _userRepo.DeleteUserAsync(user);
