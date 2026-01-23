@@ -3,7 +3,6 @@ using Groupchat_Api.Core.Security;
 using Groupchat_Api.Data.Dtos.User;
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Groupchat_Api.Core.Services
 {
