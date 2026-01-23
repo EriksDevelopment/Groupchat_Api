@@ -27,6 +27,8 @@ namespace Groupchat_Api.Data.Repos
         }
 
         public async Task<List<Group>> GetGroupAsync() =>
-            await _context.Groups.ToListAsync();
+            await _context.Groups.Include(g => g.GroupUsers)
+                .ThenInclude(gu => gu.User)
+                .ToListAsync();
     }
 }

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Groupchat_Api.Core.Interfaces;
+using Groupchat_Api.Data.Dtos;
 using Groupchat_Api.Data.Dtos.Group;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,23 @@ namespace Groupchat_Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something went wrong while creating group.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("show")]
+        public async Task<ActionResult<List<ShowResponseDto>>> Show()
+        {
+            try
+            {
+                var result = await _groupService.ShowAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while retrieving all groups.");
                 return StatusCode(500, "Something went wrong.");
             }
         }

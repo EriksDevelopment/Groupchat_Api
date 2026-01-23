@@ -77,8 +77,6 @@ namespace Groupchat_Api.Core.Services
             {
                 Message = $"User {user.UserName} deleted successfully."
             };
-
-
         }
     }
 }
