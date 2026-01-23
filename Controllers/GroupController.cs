@@ -49,13 +49,43 @@ namespace Groupchat_Api.Controllers
         {
             try
             {
-                var result = await _groupService.ShowAsync();
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _groupService.ShowAsync(userId);
 
                 return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something went wrong while retrieving all groups.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPost("join")]
+        public async Task<ActionResult<JoinResponseDto>> Join(JoinRequestDto dto)
+        {
+            try
+            {
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _groupService.JoinAsync(dto, user);
+
+                _logger.LogInformation("Successfully joined group.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while joining group.");
                 return StatusCode(500, "Something went wrong.");
             }
         }

@@ -10,9 +10,11 @@ namespace Groupchat_Api.Core.Services
     public class GroupService : IGroupService
     {
         private readonly IGroupRepo _groupRepo;
-        public GroupService(IGroupRepo groupRepo)
+        private readonly IUserRepo _userRepo;
+        public GroupService(IGroupRepo groupRepo, IUserRepo userRepo)
         {
             _groupRepo = groupRepo;
+            _userRepo = userRepo;
         }
 
         public async Task<CreateResponseDto> CreateAsync(CreateRequestDto dto, int creatorUserId)
@@ -38,9 +40,12 @@ namespace Groupchat_Api.Core.Services
             };
         }
 
-        public async Task<List<ShowResponseDto>> ShowAsync()
+        public async Task<List<ShowResponseDto>> ShowAsync(int userId)
         {
-            var groups = await _groupRepo.GetGroupAsync();
+            var groups = await _groupRepo.GetGroupAsync(userId);
+
+            if (!groups.Any())
+                throw new ArgumentException("You have not joined any group.");
 
             return groups.Select(group => new ShowResponseDto
             {
@@ -53,6 +58,37 @@ namespace Groupchat_Api.Core.Services
                 InviteCode = group.InviteCode,
                 CreatedAt = group.CreatedAt
             }).ToList();
+        }
+
+        public async Task<JoinResponseDto> JoinAsync(JoinRequestDto dto, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(dto.InviteCode))
+                throw new ArgumentException("Invite code can't be empty.");
+
+            var group = await _groupRepo.GetInviteCodeAsync(dto.InviteCode);
+            if (group == null)
+                throw new ArgumentException("No group found.");
+
+            var user = await _userRepo.GetIdAsync(userId);
+
+            var alreadyMember = group.GroupUsers.Any(gu => gu.UserId == userId);
+            if (alreadyMember)
+                throw new ArgumentException("Already a member of this group.");
+
+            var groupUser = new GroupUser
+            {
+                GroupId = group.Id,
+                UserId = userId,
+                IsAdmin = false,
+                JoinedAt = DateTime.UtcNow
+            };
+
+            await _groupRepo.AddGroupUserAsync(groupUser);
+
+            return new JoinResponseDto
+            {
+                Message = $"You have successfully joined group '{group.GroupName}'"
+            };
         }
     }
 }

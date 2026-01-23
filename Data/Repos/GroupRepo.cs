@@ -26,9 +26,21 @@ namespace Groupchat_Api.Data.Repos
             return group;
         }
 
-        public async Task<List<Group>> GetGroupAsync() =>
-            await _context.Groups.Include(g => g.GroupUsers)
+        public async Task<List<Group>> GetGroupAsync(int userId) =>
+            await _context.Groups
+                .Where(g => g.GroupUsers.Any(gu => gu.UserId == userId))
+                .Include(g => g.GroupUsers)
                 .ThenInclude(gu => gu.User)
                 .ToListAsync();
+
+        public async Task<Group?> GetInviteCodeAsync(string inviteCode) =>
+            await _context.Groups.FirstOrDefaultAsync(g => g.InviteCode == inviteCode);
+
+        public async Task<GroupUser> AddGroupUserAsync(GroupUser groupUser)
+        {
+            _context.GroupUsers.Add(groupUser);
+            await _context.SaveChangesAsync();
+            return groupUser;
+        }
     }
 }

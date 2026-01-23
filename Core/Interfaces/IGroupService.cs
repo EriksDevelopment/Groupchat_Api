@@ -6,6 +6,8 @@ namespace Groupchat_Api.Core.Interfaces
     public interface IGroupService
     {
         Task<CreateResponseDto> CreateAsync(CreateRequestDto dto, int creatorUserId);
-        Task<List<ShowResponseDto>> ShowAsync();
+        Task<List<ShowResponseDto>> ShowAsync(int userId);
+
+        Task<JoinResponseDto> JoinAsync(JoinRequestDto dto, int userId);
     }
 }
