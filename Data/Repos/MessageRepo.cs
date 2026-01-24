@@ -16,6 +16,7 @@ namespace Groupchat_Api.Data.Repos
             await _context.Messages
             .Where(m => m.Group.InviteCode == inviteCode)
             .Include(m => m.User)
+            .OrderByDescending(m => m.SentAt)
             .ToListAsync();
 
         public async Task<Message> AddMessageAsync(Message message)

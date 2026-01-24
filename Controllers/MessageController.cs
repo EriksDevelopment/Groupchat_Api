@@ -41,5 +41,30 @@ namespace Groupchat_Api.Controllers
                 return StatusCode(500, "Something went wrong.");
             }
         }
+
+        [Authorize(Roles = "User")]
+        [HttpPost("send")]
+        public async Task<ActionResult<MessageCreateResponseDto>> Create([FromBody] MessageCreateRequestDto dto)
+        {
+            try
+            {
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _messageService.CreateAsync(dto, user);
+
+                _logger.LogInformation("Message successfully sent.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while sending message.");
+                return StatusCode(500, "Something went wrong.");
+            }
+
+        }
     }
 }
