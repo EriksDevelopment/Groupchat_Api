@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.Marshalling;
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,20 @@ namespace Groupchat_Api.Data.Repos
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
             return message;
+        }
+
+        public async Task SetMessageToUnknownAsync(int userId, int groupId)
+        {
+            var messages = await _context.Messages
+                .Where(m => m.UserId == userId && m.GroupId == groupId)
+                .ToListAsync();
+
+            foreach (var m in messages)
+            {
+                m.UserId = null;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

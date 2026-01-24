@@ -6,8 +6,8 @@ namespace Groupchat_Api.Data.Models
         public string Content { get; set; } = null!;
         public DateTime SentAt { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public int? UserId { get; set; }
+        public User? User { get; set; } = null!;
 
         public int GroupId { get; set; }
         public Group Group { get; set; } = null!;

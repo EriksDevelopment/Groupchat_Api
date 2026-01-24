@@ -11,10 +11,12 @@ namespace Groupchat_Api.Core.Services
     {
         private readonly IGroupRepo _groupRepo;
         private readonly IUserRepo _userRepo;
-        public GroupService(IGroupRepo groupRepo, IUserRepo userRepo)
+        private readonly IMessageRepo _messageRepo;
+        public GroupService(IGroupRepo groupRepo, IUserRepo userRepo, IMessageRepo messageRepo)
         {
             _groupRepo = groupRepo;
             _userRepo = userRepo;
+            _messageRepo = messageRepo;
         }
 
         public async Task<GroupCreateResponseDto> CreateAsync(GroupCreateRequestDto dto, int creatorUserId)
@@ -104,6 +106,7 @@ namespace Groupchat_Api.Core.Services
             if (groupUser == null)
                 throw new ArgumentException("You are not a member of this group.");
 
+            await _messageRepo.SetMessageToUnknownAsync(userId, group.Id);
 
             await _groupRepo.LeaveGroupAsync(groupUser);
 

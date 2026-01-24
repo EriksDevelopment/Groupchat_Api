@@ -90,6 +90,28 @@ namespace Groupchat_Api.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
+        [HttpDelete("leave/{inviteCode}")]
+        public async Task<ActionResult<GroupLeaveResponseDto>> Leave(string inviteCode)
+        {
+            try
+            {
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
+                var result = await _groupService.LeaveAsync(inviteCode, user);
+
+                _logger.LogInformation("User successfully left group.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while leaving group.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
     }
 }
