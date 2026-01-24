@@ -14,7 +14,7 @@ namespace Groupchat_Api.Core.Services
             _groupRepo = groupRepo;
         }
 
-        public async Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode)
+        public async Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode, int userId)
         {
             if (string.IsNullOrWhiteSpace(inviteCode))
                 throw new ArgumentException("Invite code can't be empty.");
@@ -22,6 +22,10 @@ namespace Groupchat_Api.Core.Services
             var group = await _groupRepo.GetInviteCodeAsync(inviteCode);
             if (group == null)
                 throw new ArgumentException("No group found.");
+
+            var isMember = await _groupRepo.IsUserInGroupAsync(userId, group.Id);
+            if (!isMember)
+                throw new ArgumentException("You are not a member of this group.");
 
             var messages = await _messageRepo.GetMessageAsync(inviteCode);
             if (!messages.Any())

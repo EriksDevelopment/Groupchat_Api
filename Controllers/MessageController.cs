@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Groupchat_Api.Core.Interfaces;
 using Groupchat_Api.Data.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,9 @@ namespace Groupchat_Api.Controllers
         {
             try
             {
-                var result = await _messageService.ShowAsync(inviteCode);
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _messageService.ShowAsync(inviteCode, user);
 
                 _logger.LogInformation("Messages successfully retrieved.");
                 return Ok(result);

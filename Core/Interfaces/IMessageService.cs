@@ -4,6 +4,6 @@ namespace Groupchat_Api.Core.Interfaces
 {
     public interface IMessageService
     {
-        Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode);
+        Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode, int userId);
     }
 }
