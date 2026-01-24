@@ -17,7 +17,7 @@ namespace Groupchat_Api.Core.Services
             _userRepo = userRepo;
         }
 
-        public async Task<CreateResponseDto> CreateAsync(CreateRequestDto dto, int creatorUserId)
+        public async Task<GroupCreateResponseDto> CreateAsync(GroupCreateRequestDto dto, int creatorUserId)
         {
             if (string.IsNullOrWhiteSpace(dto.GroupName))
                 throw new ArgumentException("Group name can't be empty.");
@@ -30,7 +30,7 @@ namespace Groupchat_Api.Core.Services
 
             var createdGroup = await _groupRepo.AddGroupAsync(group, creatorUserId);
 
-            return new CreateResponseDto
+            return new GroupCreateResponseDto
             {
                 Message = "Group created successfully!",
                 GroupName = createdGroup.GroupName,
@@ -40,14 +40,14 @@ namespace Groupchat_Api.Core.Services
             };
         }
 
-        public async Task<List<ShowResponseDto>> ShowAsync(int userId)
+        public async Task<List<GroupShowResponseDto>> ShowAsync(int userId)
         {
             var groups = await _groupRepo.GetGroupAsync(userId);
 
             if (!groups.Any())
                 throw new ArgumentException("You have not joined any group.");
 
-            return groups.Select(group => new ShowResponseDto
+            return groups.Select(group => new GroupShowResponseDto
             {
                 Creator = group.GroupUsers
                     .FirstOrDefault(gu => gu.IsAdmin)?
@@ -60,7 +60,7 @@ namespace Groupchat_Api.Core.Services
             }).ToList();
         }
 
-        public async Task<JoinResponseDto> JoinAsync(JoinRequestDto dto, int userId)
+        public async Task<GroupJoinResponseDto> JoinAsync(GroupJoinRequestDto dto, int userId)
         {
             if (string.IsNullOrWhiteSpace(dto.InviteCode))
                 throw new ArgumentException("Invite code can't be empty.");
@@ -85,7 +85,7 @@ namespace Groupchat_Api.Core.Services
 
             await _groupRepo.AddGroupUserAsync(groupUser);
 
-            return new JoinResponseDto
+            return new GroupJoinResponseDto
             {
                 Message = $"You have successfully joined group '{group.GroupName}'"
             };

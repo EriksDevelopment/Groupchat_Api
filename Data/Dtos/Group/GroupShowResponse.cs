@@ -1,6 +1,6 @@
-namespace Groupchat_Api.Data.Dtos
+namespace Groupchat_Api.Data.Dtos.Group
 {
-    public class ShowResponseDto
+    public class GroupShowResponseDto
     {
         public string Creator { get; set; } = null!;
         public string GroupName { get; set; } = null!;

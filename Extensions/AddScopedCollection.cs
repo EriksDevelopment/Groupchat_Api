@@ -18,6 +18,9 @@ namespace Groupchat_Api.Extensions
             services.AddScoped<IGroupRepo, GroupRepo>();
             services.AddScoped<IGroupService, GroupService>();
 
+            services.AddScoped<IMessageRepo, MessageRepo>();
+            services.AddScoped<IMessageService, MessageService>();
+
             return services;
         }
     }

@@ -1,6 +1,6 @@
 namespace Groupchat_Api.Data.Dtos.Group
 {
-    public class JoinResponseDto
+    public class GroupJoinResponseDto
     {
         public string Message { get; set; } = null!;
     }

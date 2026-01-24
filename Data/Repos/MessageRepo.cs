@@ -16,7 +16,6 @@ namespace Groupchat_Api.Data.Repos
             await _context.Messages
             .Where(m => m.Group.InviteCode == inviteCode)
             .Include(m => m.User)
-            .ThenInclude(u => u.UserName)
             .ToListAsync();
     }
 }

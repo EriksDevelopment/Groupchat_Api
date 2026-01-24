@@ -14,7 +14,7 @@ namespace Groupchat_Api.Core.Services
             _groupRepo = groupRepo;
         }
 
-        public async Task<List<ShowResponseDto>> ShowAsync(string inviteCode)
+        public async Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode)
         {
             if (string.IsNullOrWhiteSpace(inviteCode))
                 throw new ArgumentException("Invite code can't be empty.");
@@ -27,7 +27,7 @@ namespace Groupchat_Api.Core.Services
             if (!messages.Any())
                 throw new ArgumentException("No messages in groupchat.");
 
-            return messages.Select(m => new ShowResponseDto
+            return messages.Select(m => new MessageShowResponseDto
             {
                 UserName = m.User.UserName,
                 Content = m.Content,

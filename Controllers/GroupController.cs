@@ -21,7 +21,7 @@ namespace Groupchat_Api.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost("create")]
-        public async Task<ActionResult<CreateResponseDto>> Create(CreateRequestDto dto)
+        public async Task<ActionResult<GroupCreateResponseDto>> Create(GroupCreateRequestDto dto)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Groupchat_Api.Controllers
 
         [Authorize(Roles = "User")]
         [HttpGet("show")]
-        public async Task<ActionResult<List<ShowResponseDto>>> Show()
+        public async Task<ActionResult<List<GroupShowResponseDto>>> Show()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Groupchat_Api.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost("join")]
-        public async Task<ActionResult<JoinResponseDto>> Join(JoinRequestDto dto)
+        public async Task<ActionResult<GroupJoinResponseDto>> Join(GroupJoinRequestDto dto)
         {
             try
             {
