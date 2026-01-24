@@ -110,6 +110,16 @@ namespace Groupchat_Api.Core.Services
 
             await _groupRepo.LeaveGroupAsync(groupUser);
 
+            var membersLeft = await _groupRepo.CountUsersInGroupAsync(group.Id);
+            if (membersLeft == 0)
+            {
+                await _groupRepo.DeleteGroupAsync(group);
+                return new GroupLeaveResponseDto
+                {
+                    Message = $"You have left group {group.GroupName}, group deleted because it had no members left."
+                };
+            }
+
             return new GroupLeaveResponseDto
             {
                 Message = $"You have left group '{group.GroupName}'"
