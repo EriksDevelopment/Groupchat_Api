@@ -17,5 +17,12 @@ namespace Groupchat_Api.Data.Repos
             .Where(m => m.Group.InviteCode == inviteCode)
             .Include(m => m.User)
             .ToListAsync();
+
+        public async Task<Message> AddMessageAsync(Message message)
+        {
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+            return message;
+        }
     }
 }

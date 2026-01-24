@@ -1,5 +1,3 @@
-using Microsoft.Identity.Client;
-
 namespace Groupchat_Api.Data.Dtos.Message
 {
     public class MessageCreateResponseDto
