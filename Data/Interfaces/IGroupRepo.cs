@@ -9,5 +9,6 @@ namespace Groupchat_Api.Data.Interfaces
         Task<Group?> GetInviteCodeAsync(string inviteCode);
         Task<GroupUser> AddGroupUserAsync(GroupUser groupUser);
         Task<bool> IsUserInGroupAsync(int userId, int groupId);
+        Task<GroupUser> LeaveGroupAsync(GroupUser groupUser);
     }
 }

@@ -34,7 +34,8 @@ namespace Groupchat_Api.Core.Services
 
             return messages.Select(m => new MessageShowResponseDto
             {
-                UserName = m.User.UserName,
+                UserName = m.Group.GroupUsers.Any(gu => gu.UserId == m.UserId)
+                    ? m.User.UserName : "Unknown",
                 Content = m.Content,
                 SentAt = m.SentAt
             }).ToList();

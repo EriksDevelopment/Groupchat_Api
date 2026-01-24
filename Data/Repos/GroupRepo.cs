@@ -1,6 +1,7 @@
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Groupchat_Api.Data.Repos
 {
@@ -45,5 +46,12 @@ namespace Groupchat_Api.Data.Repos
 
         public async Task<bool> IsUserInGroupAsync(int userId, int groupId) =>
             await _context.GroupUsers.AnyAsync(gu => gu.UserId == userId && gu.GroupId == groupId);
+
+        public async Task<GroupUser> LeaveGroupAsync(GroupUser groupUser)
+        {
+            _context.GroupUsers.Remove(groupUser);
+            await _context.SaveChangesAsync();
+            return groupUser;
+        }
     }
 }
