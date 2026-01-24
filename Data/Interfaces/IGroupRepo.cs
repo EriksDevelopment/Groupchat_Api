@@ -10,5 +10,6 @@ namespace Groupchat_Api.Data.Interfaces
         Task<GroupUser> AddGroupUserAsync(GroupUser groupUser);
         Task<bool> IsUserInGroupAsync(int userId, int groupId);
         Task<GroupUser> LeaveGroupAsync(GroupUser groupUser);
+        Task<GroupUser?> GetGroupUserAsync(int userId, int groupId);
     }
 }

@@ -90,5 +90,27 @@ namespace Groupchat_Api.Core.Services
                 Message = $"You have successfully joined group '{group.GroupName}'"
             };
         }
+
+        public async Task<GroupLeaveResponseDto> LeaveAsync(string inviteCode, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(inviteCode))
+                throw new ArgumentException("Invite code can't be empty.");
+
+            var group = await _groupRepo.GetInviteCodeAsync(inviteCode);
+            if (group == null)
+                throw new ArgumentException("No group found.");
+
+            var groupUser = await _groupRepo.GetGroupUserAsync(userId, group.Id);
+            if (groupUser == null)
+                throw new ArgumentException("You are not a member of this group.");
+
+
+            await _groupRepo.LeaveGroupAsync(groupUser);
+
+            return new GroupLeaveResponseDto
+            {
+                Message = $"You have left group '{group.GroupName}'"
+            };
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Groupchat_Api.Core.Interfaces
     {
         Task<GroupCreateResponseDto> CreateAsync(GroupCreateRequestDto dto, int creatorUserId);
         Task<List<GroupShowResponseDto>> ShowAsync(int userId);
-
         Task<GroupJoinResponseDto> JoinAsync(GroupJoinRequestDto dto, int userId);
+        Task<GroupLeaveResponseDto> LeaveAsync(string inviteCode, int userId);
     }
 }
