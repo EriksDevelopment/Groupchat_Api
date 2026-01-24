@@ -5,6 +5,7 @@ namespace Groupchat_Api.Data.Models
         public int Id { get; set; }
         public string Content { get; set; } = null!;
         public DateTime SentAt { get; set; }
+        public string MessageCode { get; set; } = Guid.NewGuid().ToString("N");
 
         public int? UserId { get; set; }
         public User? User { get; set; } = null!;

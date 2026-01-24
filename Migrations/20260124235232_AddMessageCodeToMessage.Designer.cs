@@ -4,6 +4,7 @@ using Groupchat_Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Groupchat_Api.Migrations
 {
     [DbContext(typeof(GroupchatDbContext))]
-    partial class GroupchatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260124235232_AddMessageCodeToMessage")]
+    partial class AddMessageCodeToMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +96,7 @@ namespace Groupchat_Api.Migrations
 
                     b.Property<string>("MessageCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SentAt")
                         .ValueGeneratedOnAdd()
@@ -106,9 +109,6 @@ namespace Groupchat_Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("MessageCode")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 

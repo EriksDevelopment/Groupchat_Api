@@ -45,14 +45,17 @@ namespace Groupchat_Api.Data
                 entity.Property(m => m.SentAt).HasDefaultValueSql("GETUTCDATE()");
 
                 entity.HasOne(m => m.User)
-                      .WithMany(u => u.Messages)
-                      .HasForeignKey(m => m.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(u => u.Messages)
+                    .HasForeignKey(m => m.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(m => m.Group)
-                      .WithMany(g => g.Messages)
-                      .HasForeignKey(m => m.GroupId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(g => g.Messages)
+                    .HasForeignKey(m => m.GroupId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(m => m.MessageCode)
+                    .IsUnique();
             });
 
 
@@ -61,14 +64,14 @@ namespace Groupchat_Api.Data
                 entity.HasKey(gu => new { gu.UserId, gu.GroupId });
 
                 entity.HasOne(gu => gu.User)
-                      .WithMany(u => u.GroupUsers)
-                      .HasForeignKey(gu => gu.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(u => u.GroupUsers)
+                    .HasForeignKey(gu => gu.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(gu => gu.Group)
-                      .WithMany(g => g.GroupUsers)
-                      .HasForeignKey(gu => gu.GroupId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(g => g.GroupUsers)
+                    .HasForeignKey(gu => gu.GroupId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
