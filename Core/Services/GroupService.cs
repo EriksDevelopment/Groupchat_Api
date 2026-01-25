@@ -2,8 +2,6 @@ using Groupchat_Api.Data.Models;
 using Groupchat_Api.Core.Interfaces;
 using Groupchat_Api.Data.Dtos.Group;
 using Groupchat_Api.Data.Interfaces;
-using Groupchat_Api.Data.Dtos;
-using Azure;
 
 namespace Groupchat_Api.Core.Services
 {

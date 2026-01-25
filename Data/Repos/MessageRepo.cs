@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.Marshalling;
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;

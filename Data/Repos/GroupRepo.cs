@@ -1,7 +1,6 @@
 using Groupchat_Api.Data.Interfaces;
 using Groupchat_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Groupchat_Api.Data.Repos
 {

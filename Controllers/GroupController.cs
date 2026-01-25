@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Groupchat_Api.Core.Interfaces;
-using Groupchat_Api.Data.Dtos;
 using Groupchat_Api.Data.Dtos.Group;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

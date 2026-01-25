@@ -3,7 +3,6 @@ using Groupchat_Api.Core.Interfaces;
 using Groupchat_Api.Data.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Groupchat_Api.Controllers
 {
