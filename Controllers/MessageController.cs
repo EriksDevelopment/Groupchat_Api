@@ -64,7 +64,30 @@ namespace Groupchat_Api.Controllers
                 _logger.LogError(ex, "Something went wrong while sending message.");
                 return StatusCode(500, "Something went wrong.");
             }
+        }
 
+        [Authorize(Roles = "User")]
+        [HttpDelete("delete/{messageCode}")]
+        public async Task<ActionResult<MessageDeleteResponseDto>> Delete(string messageCode)
+        {
+            try
+            {
+                var user = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _messageService.DeleteAsync(messageCode, user);
+
+                _logger.LogInformation("Message successfully deleted.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while deleting message.");
+                return StatusCode(500, "Something went wrong.");
+            }
         }
     }
 }
