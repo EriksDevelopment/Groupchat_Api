@@ -40,5 +40,12 @@ namespace Groupchat_Api.Data.Repos
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Message> DeleteMessageAsync(Message message)
+        {
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
+            return message;
+        }
     }
 }

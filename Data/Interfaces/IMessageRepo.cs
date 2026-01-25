@@ -7,5 +7,6 @@ namespace Groupchat_Api.Data.Interfaces
         Task<List<Message>> GetMessageAsync(string inviteCode);
         Task<Message> AddMessageAsync(Message message);
         Task SetMessageToUnknownAsync(int userId, int groupId);
+        Task<Message> DeleteMessageAsync(Message message);
     }
 }
