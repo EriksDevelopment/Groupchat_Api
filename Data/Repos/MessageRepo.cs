@@ -41,11 +41,13 @@ namespace Groupchat_Api.Data.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Message> DeleteMessageAsync(Message message)
+        public async Task DeleteMessageAsync(Message message)
         {
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
-            return message;
         }
+
+        public async Task<Message?> MessageExistsAsync(string messageCode) =>
+            await _context.Messages.FirstOrDefaultAsync(m => m.MessageCode == messageCode);
     }
 }

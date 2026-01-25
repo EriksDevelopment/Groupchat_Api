@@ -6,5 +6,6 @@ namespace Groupchat_Api.Core.Interfaces
     {
         Task<List<MessageShowResponseDto>> ShowAsync(string inviteCode, int userId);
         Task<MessageCreateResponseDto> CreateAsync(MessageCreateRequestDto dto, int userId);
+        Task<MessageDeleteResponseDto> DeleteAsync(string messageCode, int userId);
     }
 }

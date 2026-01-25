@@ -69,5 +69,25 @@ namespace Groupchat_Api.Core.Services
                 Message = "Message sent."
             };
         }
+
+        public async Task<MessageDeleteResponseDto> DeleteAsync(string messageCode, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(messageCode))
+                throw new ArgumentException("Message code can't be empty.");
+
+            var message = await _messageRepo.MessageExistsAsync(messageCode);
+            if (message == null)
+                throw new ArgumentException("No message found.");
+
+            if (message.UserId != userId)
+                throw new ArgumentException("You have not sent a message with that message code.");
+
+            await _messageRepo.DeleteMessageAsync(message);
+
+            return new MessageDeleteResponseDto
+            {
+                Message = "Message successfully deleted."
+            };
+        }
     }
 }
